@@ -4,7 +4,7 @@ from sys import stdin
 import requests
 
 
-SERVER_ADDR = '127.0.0.1:9000'
+SERVER_ADDR = '127.0.0.1:8000'
 
 # подключаемся к серверу через requests
 # смотрим список сообщений, выводим его на экран
@@ -31,8 +31,16 @@ class ConsoleInterface:
     
     def print_messages_from_buffer(self):
         self.retrieve_messages_from_server()
+                
         for m in self.list_:
-            print(m)
+            content = m['content']
+
+            if m.get('received'):
+                print('him: ', end='')
+                print(content)
+            else:
+                print('you: ', end='')
+                print(content)
     
     def clear(self):
         self.list_ = []
@@ -53,16 +61,19 @@ class ConsoleInterface:
         for line in stdin:
             cls()
             self.print_messages_from_buffer()
-            print(line.split('\n'))
             if line.split('\n')[0] == 'help':
+                print('r - refresh history')
                 print('help - print this message')
                 print('init 127.0.0.1:9000 - try to init connection with 127.0.0.1:9000')
                 print('clear - clear history')
                 print('message - send "message"')
             elif line.split('\n')[0] == 'clear':
                 self.clear()
+                cls()
             elif line.split('\n')[0] == 'init':
                 self.init()
+            elif line.split('\n')[0] == 'r':
+                ...
             else:
                 self.send(line.split('\n')[0])
             print('input below: ')
