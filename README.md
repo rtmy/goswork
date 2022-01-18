@@ -38,14 +38,14 @@
 # Документация
 Подробнее описано в комментариях
 ## telegramme
-1. websocket-server, класс хэндлера для работы в качестве мастера - consumers.py
-2. websocket-client, класс для работы в качестве клиента - outconnections.py
-3. Регистрация сообщений - tools.py
-4. Сопоставление методов с адресами (эндпоинты) - urls.py
+1. websocket-server, класс хэндлера для работы в качестве мастера - [consumers.py](https://github.com/rtmy/goswork/blob/master/telegramme/telegramme/consumers.py)
+2. websocket-client, класс для работы в качестве клиента - [outconnections.py](https://github.com/rtmy/goswork/blob/master/telegramme/telegramme/outconnections.py)
+3. Регистрация сообщений - [tools.py](https://github.com/rtmy/goswork/blob/master/telegramme/telegramme/tools.py)
+4. Сопоставление методов с адресами (эндпоинты) - [urls.py](https://github.com/rtmy/goswork/blob/master/telegramme/telegramme/urls.py)
 ## client_interface
-Методы инициализации, отправки сообщений - views.py
+Методы инициализации, отправки сообщений - [views.py](https://github.com/rtmy/goswork/blob/master/telegramme/client_interface/views.py)
 ## client
-Единственный файл консольного клиента - client.py
+Единственный файл консольного клиента - [client.py](https://github.com/rtmy/goswork/blob/master/client.py)
 
 # Оговорки
 * Для обновления истории (и получения последних сообщений) надо нажать Enter
