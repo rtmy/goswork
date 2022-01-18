@@ -71,7 +71,7 @@ class ConsoleInterface:
         requests.get(f'http://{SERVER_ADDR}/chat/clear/')
 
     def send(self, message):
-        requests.get(f'http://{SERVER_ADDR}/chat/send/?message={message}')
+        requests.get(f'http://{SERVER_ADDR}/chat/send/', params=dict(message=message))
     
     def init(self):
         requests.get(f'http://{SERVER_ADDR}/chat/init/')
