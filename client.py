@@ -4,7 +4,7 @@ from sys import stdin
 import requests
 
 
-SERVER_ADDR = '127.0.0.1:8000'
+SERVER_ADDR = '127.0.0.1:9000'
 
 # подключаемся к серверу через requests
 # смотрим список сообщений, выводим его на экран
