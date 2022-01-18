@@ -9,6 +9,7 @@ from telegramme.tools import register_message
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
+        print('channel name', self.channel_name)
         with open('channel_name', 'w') as file:
             file.write(self.channel_name)
         await self.accept()
@@ -35,6 +36,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     # Receive message from room group
     async def chat_message(self, event):
+        printt('RECEIVED MESSAGE TO SEND', event)
+        
         await register_message(
             content=event['text'],
             received=False,
@@ -43,5 +46,5 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'message': event
+            'message': event['message']
         }))

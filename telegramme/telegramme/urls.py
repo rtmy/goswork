@@ -27,5 +27,6 @@ urlpatterns = [
 
     path('chat/send/', client_views.send_message_as_node),
     path('chat/send_message_as_master/', client_views.send_message_as_master),    
+    path('chat/clear/', client_views.clear_history),
     # path('messages/', client_views.current_datetime),
 ]

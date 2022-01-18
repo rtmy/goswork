@@ -1,18 +1,22 @@
+import json
 import datetime
 import websocket
 import _thread
 import time
 
 from telegramme import models 
-from telegramme.tools import register_message
+from telegramme.tools import register_message, register_message_sync
 
 
 class OutConnection:
     @staticmethod
     def on_message(ws, message):
-        register_message(
-            content=message,
-            received=False,
+        print('message in outconnections')
+        message = json.loads(message)
+
+        register_message_sync(
+            content=message.get('message').get('text'),
+            received=True,
             datetime=datetime.datetime.now()
         )
 
@@ -33,7 +37,7 @@ class OutConnection:
 
     def __init__(self):
         websocket.enableTrace(True)
-        ws = websocket.WebSocketApp("ws://127.0.0.1:8001/ws/chat/",
+        ws = websocket.WebSocketApp("ws://127.0.0.1:9000/ws/chat/",
                                   on_open=OutConnection.on_open,
                                   on_message=OutConnection.on_message,
                                   on_error=OutConnection.on_error,
