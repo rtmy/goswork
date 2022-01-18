@@ -25,14 +25,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             received=True,
             datetime_received=datetime.datetime.now()
         )
-        
-        # Todo; confrimation
-        await self.send(json.dumps(
-            {
-                'type': 'chat_message',
-                'message': '...',
-            }
-        ))
 
     # Receive message from room group
     async def chat_message(self, event):

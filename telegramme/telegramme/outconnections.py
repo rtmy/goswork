@@ -15,7 +15,7 @@ class OutConnection:
         message = json.loads(message)
 
         register_message_sync(
-            content=message.get('message').get('text'),
+            content=message.get('message'),
             received=True,
             datetime=datetime.datetime.now()
         )
