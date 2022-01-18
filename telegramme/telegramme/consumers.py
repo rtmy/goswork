@@ -36,7 +36,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     # Receive message from room group
     async def chat_message(self, event):
-        printt('RECEIVED MESSAGE TO SEND', event)
+        print('RECEIVED MESSAGE TO SEND', event)
         
         await register_message(
             content=event['text'],
