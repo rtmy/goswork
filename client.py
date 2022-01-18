@@ -1,4 +1,5 @@
 import os
+import time
 from sys import stdin
 
 import requests
@@ -76,6 +77,8 @@ class ConsoleInterface:
                 ...
             else:
                 self.send(line.split('\n')[0])
+                time.sleep(1)
+                
             print('input below: ')
             # print(line, end='')
 
