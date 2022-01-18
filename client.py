@@ -62,7 +62,7 @@ class ConsoleInterface:
             elif line.split('\n')[0] == 'clear':
                 self.clear()
             elif line.split('\n')[0] == 'init':
-                self.init(line.split('\n')[1])
+                self.init()
             else:
                 self.send(line.split('\n')[0])
             print('input below: ')
