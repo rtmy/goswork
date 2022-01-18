@@ -9,6 +9,8 @@ from telegramme.tools import register_message, register_message_sync
 
 
 class OutConnection:
+    """Класс отправки сообщений с различными обработчиками для режима клиента"""
+
     @staticmethod
     def on_message(ws, message):
         print('message in outconnections')
@@ -52,4 +54,5 @@ class OutConnection:
 
 
 class OutConnectionSignleton:
+    """Singleton - оборачивание класса вебсокетера в переменную класса"""
     connection = OutConnection()
