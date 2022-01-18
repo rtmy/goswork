@@ -19,7 +19,7 @@ def current_state(request):
 
 
 def init_connection(request):
-    OutConnectionSignleton().connection.ws.send('init')
+    OutConnectionSignleton().connection.ws.send('init_announcement')
     return JsonResponse({'state': get_server_state()})
 
 

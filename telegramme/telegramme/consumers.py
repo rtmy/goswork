@@ -23,11 +23,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # Receive message from WebSocket
     async def receive(self, text_data):
         # Send message to room group
-        await register_message(
-            content=text_data,
-            received=True,
-            datetime_received=datetime.datetime.now()
-        )
+        if text_data != 'init_announcement':
+            await register_message(
+                content=text_data,
+                received=True,
+                datetime_received=datetime.datetime.now()
+            )
 
     # Receive message from room group
     async def chat_message(self, event):
