@@ -28,9 +28,11 @@ class ConsoleInterface:
     
     def retrieve_messages_from_server(self):
         list_ = requests.get(f'http://{SERVER_ADDR}/chat/list/')
+        print('got', list_.json()['messages'][-1])
         self.list_ = list_.json().get('messages', [])
     
     def print_messages_from_buffer(self):
+        print('call')
         self.retrieve_messages_from_server()
                 
         for m in self.list_:
@@ -63,7 +65,6 @@ class ConsoleInterface:
             cls()
             self.print_messages_from_buffer()
             if line.split('\n')[0] == 'help':
-                print('r - refresh history')
                 print('help - print this message')
                 print('init 127.0.0.1:9000 - try to init connection with 127.0.0.1:9000')
                 print('clear - clear history')
@@ -73,12 +74,11 @@ class ConsoleInterface:
                 cls()
             elif line.split('\n')[0] == 'init':
                 self.init()
-            elif line.split('\n')[0] == 'r':
-                ...
-            else:
+            elif line.split('\n')[0]:
                 self.send(line.split('\n')[0])
-                time.sleep(1)
-                
+            else:
+                print('input below: ')
+                continue
             print('input below: ')
             # print(line, end='')
 
