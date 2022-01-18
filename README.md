@@ -33,6 +33,17 @@ Django
 Django Channels
 requests
 
+# Документация
+Подробнее описано в комментариях
+## telegramme
+websocket-server, класс хэндлера для работы в качестве мастера - consumers.py
+websocket-client, класс для работы в качестве клиента - outconnections.py
+Регистрация сообщений - tools.py
+Сопоставление методов с адресами (эндпоинты) - urls.py
+## client_interface
+Методы инициализации, отправки сообщений - views.py
+## client
+Единственный файл консольного клиента - client.py
 
 # Оговорки
 Сервер по умолчанию запускается в режиме debug, а не в режиме production
