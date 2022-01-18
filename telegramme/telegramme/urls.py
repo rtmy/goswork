@@ -22,8 +22,10 @@ from client_interface import views as client_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('chat/init/', client_views.init_connection),
-    path('chat/send/', client_views.send_message),
     path('chat/state/', client_views.current_state),
     path('chat/list/', client_views.message_list),
+
+    path('chat/send/', client_views.send_message_as_node),
+    path('chat/send_message_as_master/', client_views.send_message_as_master),    
     # path('messages/', client_views.current_datetime),
 ]

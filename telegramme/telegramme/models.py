@@ -4,6 +4,7 @@ from django.db import models
 class Message(models.Model):
     received = models.BooleanField(default=False)
     datetime = models.DateTimeField(auto_now_add=True)
+    datetime_received = models.DateTimeField(auto_now_add=True)
 
     # read_by_sender = models.BooleanField(default=False)
     # read_by_receiver = models.BooleanField(default=False)

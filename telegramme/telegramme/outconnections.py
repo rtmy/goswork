@@ -1,13 +1,21 @@
+import datetime
 import websocket
 import _thread
 import time
 
 from telegramme import models 
+from telegramme.tools import register_message
 
 
 class OutConnection:
     @staticmethod
     def on_message(ws, message):
+        register_message(
+            content=message,
+            received=False,
+            datetime=datetime.datetime.now()
+        )
+
         print(message)
 
     @staticmethod

@@ -1,8 +1,10 @@
+import os
 from django.http import JsonResponse
 import datetime
 
-from telegramme import models 
 from telegramme.outconnections import OutConnectionSignleton
+from telegramme.tools import register_message
+from telegramme import models
 
 
 def get_server_state():
@@ -19,10 +21,10 @@ def init_connection(request):
     return JsonResponse({'state': get_server_state()})
 
 
-def send_message(request):
+def send_message_as_node(request):
     message = 'sent from APIshka'
     
-    obj, cr = models.Message.objects.get_or_create(
+    register_message(
         content=message,
         received=False,
         datetime=datetime.datetime.now()
@@ -31,10 +33,24 @@ def send_message(request):
     OutConnectionSignleton().connection.ws.send(message)
 
     return JsonResponse({'state': get_server_state()})
+    
+
+def send_message_as_master(request):
+    from channels.layers import get_channel_layer
+    from asgiref.sync import async_to_sync
+
+    channel_layer = get_channel_layer()
+    with open('channel_name', 'r') as file:
+        channel_name = file.read()
+    async_to_sync(channel_layer.send)(channel_name, {'type': 'chat.message', 'text': 'Hello hrustiki'})
+    
+    return JsonResponse({'state': get_server_state()})
 
 
 def message_list(request):
-    qs = models.Message.objects.all()
+    # читаем состояние приложения, фильтруем
+
+    qs = models.Message.objects.all().order_by('datetime')
     messages = [dict(
         content=m.content,
         received=m.received,
