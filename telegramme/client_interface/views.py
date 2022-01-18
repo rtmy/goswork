@@ -1,6 +1,8 @@
 import os
 from django.http import JsonResponse
 import datetime
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 from telegramme.outconnections import OutConnectionSignleton
 from telegramme.tools import register_message
@@ -36,12 +38,10 @@ def send_message_as_node(request):
     
 
 def send_message_as_master(request):
-    from channels.layers import get_channel_layer
-    from asgiref.sync import async_to_sync
-
     channel_layer = get_channel_layer()
     with open('channel_name', 'r') as file:
         channel_name = file.read()
+    print('sending to', channel_name)
     async_to_sync(channel_layer.send)(channel_name, {'type': 'chat.message', 'text': 'Hello hrustiki'})
     
     return JsonResponse({'state': get_server_state()})
@@ -62,3 +62,9 @@ def message_list(request):
     # Todo: отправить сообщение о прочитке  
     
     return JsonResponse({'messages': messages})
+
+
+def clear_history(request):
+    models.Message.objects.all().delete()
+    
+    return JsonResponse({'status': 'ok'})
