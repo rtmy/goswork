@@ -10,6 +10,32 @@ SERVER_ADDR = '127.0.0.1:8000'
 def cls():
     os.system('cls' if os.name=='nt' else 'clear')
 
+
+class ClientApi:
+    """Класс для общения с сервером через HTTP"""
+    def __init__(self, address=SERVER_ADDR):
+        self.address = address
+    
+    def check_server_status(self):
+        state_req = requests.get(f'http://{self.address}/chat/state/')
+        if state_req.status_code == 200 and state_req.json().get('state', None) in ('master', 'node'):
+            return state_req.json().get('state', None)
+        return 
+    
+    def clear(self):
+        requests.get(f'http://{self.address}/chat/clear/')
+    
+    def send(self, message):
+        requests.get(f'http://{self.address}/chat/send/', params=dict(message=message))
+    
+    def init(self):
+        requests.get(f'http://{self.address}/chat/init/')
+    
+    def messages(self):
+        messages = requests.get(f'http://{SERVER_ADDR}/chat/list/')
+        return messages.json().get('messages', [])
+
+
 class ConsoleInterface:
     def __call__(self):
         """Отрисовка основного меню и обработка сообщений"""
@@ -26,31 +52,27 @@ class ConsoleInterface:
                 print('clear - clear history')
                 print('message - send "message"')
             elif line.split('\n')[0] == 'clear':
-                self.clear()
+                self.api.clear()
                 cls()
             elif line.split('\n')[0] == 'init':
                 self.init()
             elif line.split('\n')[0]:
-                self.send(line.split('\n')[0])
+                self.api.send(line.split('\n')[0])
             else:
                 print('input below:')
                 continue
             # print(line, end='')
             print('input below:')
-
-    def check_server_status(self):
-        state_req = requests.get(f'http://{SERVER_ADDR}/chat/state/')
-        if state_req.status_code == 200 and state_req.json().get('state', None) in ('master', 'node'):
-            return state_req.json().get('state', None)
-        return 
     
+    def __init__(self):
+        self.api = ClientApi()
+
     def check_and_print_server_status(self):
-        state = self.check_server_status()
-        print('Server status:', state if bool(state) else 'FAIL')
+        state = self.api.check_server_status()
+        print('Server status:', state or 'FAIL')
     
     def retrieve_messages_from_server(self):
-        messages = requests.get(f'http://{SERVER_ADDR}/chat/list/')
-        messages = messages.json().get('messages', [])
+        messages = self.api.messages()
         self.messages = messages
         return messages
     
@@ -68,14 +90,7 @@ class ConsoleInterface:
     
     def clear(self):
         self.messages = []
-        requests.get(f'http://{SERVER_ADDR}/chat/clear/')
-
-    def send(self, message):
-        requests.get(f'http://{SERVER_ADDR}/chat/send/', params=dict(message=message))
-    
-    def init(self):
-        requests.get(f'http://{SERVER_ADDR}/chat/init/')
-        self.check_and_print_server_status()
+        self.api.clear()
 
 
 if __name__ == '__main__':
