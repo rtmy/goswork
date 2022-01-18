@@ -15,7 +15,8 @@
 ``pip3 install -r requirements.txt``
 
 ### 2
-Из папки telegramme запустить:
+Из папки telegramme запустить:  
+``python3 manage.py migrate`` -- для создания БД для хранения истории сообщений  
 ``python3 manage.py runserver <address>``
 
 
@@ -30,8 +31,22 @@
 Python3  
 Django  
 Django Channels
+websocket-client
 requests
+redis
 
+# Документация
+Подробнее описано в комментариях
+## telegramme
+websocket-server, класс хэндлера для работы в качестве мастера - consumers.py
+websocket-client, класс для работы в качестве клиента - outconnections.py
+Регистрация сообщений - tools.py
+Сопоставление методов с адресами (эндпоинты) - urls.py
+## client_interface
+Методы инициализации, отправки сообщений - views.py
+## client
+Единственный файл консольного клиента - client.py
 
 # Оговорки
 Сервер по умолчанию запускается в режиме debug, а не в режиме production
+Аутенификации между серверами и между клиентом и сервером нет, ее можно добавить благодаря поддержке компонентов аутенификации Django в Channels
