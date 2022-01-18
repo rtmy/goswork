@@ -49,14 +49,14 @@ class ConsoleInterface:
         print('Server status:', state if bool(state) else 'FAIL')
     
     def retrieve_messages_from_server(self):
-        list_ = requests.get(f'http://{SERVER_ADDR}/chat/list/')
-        list_ = list_.json().get('messages', [])
-        self.list_ = list_
-        return list_
+        messages = requests.get(f'http://{SERVER_ADDR}/chat/list/')
+        messages = messages.json().get('messages', [])
+        self.messages = messages
+        return messages
     
     def print_messages_from_buffer(self):
-        list_ = self.retrieve_messages_from_server()
-        for m in list_:
+        messages = self.retrieve_messages_from_server()
+        for m in messages:
             content = m['content']
 
             if m.get('received'):
@@ -67,7 +67,7 @@ class ConsoleInterface:
                 print(content)
     
     def clear(self):
-        self.list_ = []
+        self.messages = []
         requests.get(f'http://{SERVER_ADDR}/chat/clear/')
 
     def send(self, message):
