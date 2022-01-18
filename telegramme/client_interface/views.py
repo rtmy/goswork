@@ -5,7 +5,7 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
 from telegramme.outconnections import OutConnectionSignleton
-from telegramme.tools import register_message
+from telegramme.tools import register_message, register_message_sync
 from telegramme import models
 
 
@@ -39,7 +39,7 @@ def send(request):
         return JsonResponse({'state': get_server_state(), 'status': 'ok'})
 
     elif server_state == 'node':
-        register_message(
+        register_message_sync(
             content=message,
             received=False,
             datetime=datetime.datetime.now()
@@ -51,19 +51,13 @@ def send(request):
         return JsonResponse({'state': get_server_state(), 'status': 'fail', 'error': 'server is not running'})
 
 def message_list(request):
-    # читаем состояние приложения, фильтруем
-
     qs = models.Message.objects.all().order_by('datetime')
     messages = [dict(
         content=m.content,
         received=m.received,
         
     ) for m in qs]
-    
-    # qs.update(read=True)
-    
-    # Todo: отправить сообщение о прочитке  
-    
+
     return JsonResponse({'messages': messages})
 
 

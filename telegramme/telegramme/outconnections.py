@@ -40,9 +40,9 @@ class OutConnection:
             file.write('node')
         print("### closed ###")
 
-    def __init__(self):
+    def __init__(self, address='127.0.0.1:9000'):
         websocket.enableTrace(True)
-        ws = websocket.WebSocketApp("ws://127.0.0.1:9000/ws/chat/",
+        ws = websocket.WebSocketApp(f'ws://{address}/ws/chat/',
                                   on_open=OutConnection.on_open,
                                   on_message=OutConnection.on_message,
                                   on_error=OutConnection.on_error,
