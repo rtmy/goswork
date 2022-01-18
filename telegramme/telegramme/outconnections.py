@@ -28,11 +28,16 @@ class OutConnection:
 
     @staticmethod
     def on_close(ws, close_status_code, close_msg):
+        with open('statefile', 'w') as file:
+            file.write('0')
         print("### closed ###")
 
     @staticmethod
     def on_open(ws, *args):
-        # sync
+        # Todo: sync
+        
+        with open('statefile', 'w') as file:
+            file.write('node')
         print("### closed ###")
 
     def __init__(self):

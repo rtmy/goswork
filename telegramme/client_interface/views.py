@@ -10,7 +10,8 @@ from telegramme import models
 
 
 def get_server_state():
-    return 'connected'
+    with open('statefile', 'r') as file:
+        return file.read()
 
 
 def current_state(request):
@@ -23,6 +24,12 @@ def init_connection(request):
     return JsonResponse({'state': get_server_state()})
 
 
+# слить два следующих метода в один, чтобы они работали через проверку текущего режима
+# режимы:
+# на каждый из хендлеров заглушки
+# при установке соединения устаналивается режим и пишется в файл
+
+# отправка: GET с query-параметром
 def send_message_as_node(request):
     message = 'sent from APIshka'
     

@@ -12,10 +12,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
         print('channel name', self.channel_name)
         with open('channel_name', 'w') as file:
             file.write(self.channel_name)
+        with open('statefile', 'w') as file:
+            file.write('master')
         await self.accept()
 
     async def disconnect(self, close_code):
-        ...
+        with open('statefile', 'w') as file:
+            file.write('0')
 
     # Receive message from WebSocket
     async def receive(self, text_data):
