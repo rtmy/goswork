@@ -31,7 +31,9 @@
 Python3  
 Django  
 Django Channels
+websocket-client
 requests
+redis
 
 # Документация
 Подробнее описано в комментариях
