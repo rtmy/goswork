@@ -15,7 +15,8 @@
 ``pip3 install -r requirements.txt``
 
 ### 2
-Из папки telegramme запустить:
+Из папки telegramme запустить:  
+``python3 manage.py migrate`` -- для создания БД для хранения истории сообщений  
 ``python3 manage.py runserver <address>``
 
 
@@ -35,3 +36,4 @@ requests
 
 # Оговорки
 Сервер по умолчанию запускается в режиме debug, а не в режиме production
+Аутенификации между серверами и между клиентом и сервером нет, ее можно добавить благодаря поддержке компонентов аутенификации Django в Channels
