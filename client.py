@@ -6,11 +6,6 @@ import requests
 
 SERVER_ADDR = '127.0.0.1:8000'
 
-# подключаемся к серверу через requests
-# смотрим список сообщений, выводим его на экран
-# предоставляем пользователю ввод в бесконечном цикле
-# после нажатия Enter, отправляем запрос об отправке на сервер
-
 
 def cls():
     os.system('cls' if os.name=='nt' else 'clear')
@@ -27,9 +22,7 @@ class ConsoleInterface:
         print('Server status:', state if bool(state) else 'FAIL')
     
     def retrieve_messages_from_server(self):
-        # time.sleep(4)
         list_ = requests.get(f'http://{SERVER_ADDR}/chat/list/')
-        # print('got', list_.json()['messages'][-1])
         list_ = list_.json().get('messages', [])
         self.list_ = list_
         return list_
