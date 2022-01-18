@@ -19,40 +19,36 @@ def current_state(request):
 
 
 def init_connection(request):
-    s = OutConnectionSignleton()
-    # Todo: change state
+    OutConnectionSignleton().connection.ws.send('init')
     return JsonResponse({'state': get_server_state()})
 
 
-# слить два следующих метода в один, чтобы они работали через проверку текущего режима
-# режимы:
-# на каждый из хендлеров заглушки
-# при установке соединения устаналивается режим и пишется в файл
-
-# отправка: GET с query-параметром
-def send_message_as_node(request):
-    message = 'sent from APIshka'
+def send(request):
+    server_state = get_server_state()
     
-    register_message(
-        content=message,
-        received=False,
-        datetime=datetime.datetime.now()
-    )
-    
-    OutConnectionSignleton().connection.ws.send(message)
+    message = request.GET.get('message', None)
+    print('msg', message)
+    if not message:
+        return JsonResponse({'state': get_server_state(), 'status': 'fail', 'error': 'no message'})
 
-    return JsonResponse({'state': get_server_state()})
-    
+    if server_state == 'master':
+        channel_layer = get_channel_layer()
+        with open('channel_name', 'r') as file:
+            channel_name = file.read()
+        async_to_sync(channel_layer.send)(channel_name, {'type': 'chat.message', 'text': message})
+        return JsonResponse({'state': get_server_state(), 'status': 'ok'})
 
-def send_message_as_master(request):
-    channel_layer = get_channel_layer()
-    with open('channel_name', 'r') as file:
-        channel_name = file.read()
-    print('sending to', channel_name)
-    async_to_sync(channel_layer.send)(channel_name, {'type': 'chat.message', 'text': 'Hello hrustiki'})
-    
-    return JsonResponse({'state': get_server_state()})
+    elif server_state == 'node':
+        register_message(
+            content=message,
+            received=False,
+            datetime=datetime.datetime.now()
+        )
+        OutConnectionSignleton().connection.ws.send(message)
+        return JsonResponse({'state': get_server_state(), 'status': 'ok'})
 
+    else:
+        return JsonResponse({'state': get_server_state(), 'status': 'fail', 'error': 'server is not running'})
 
 def message_list(request):
     # читаем состояние приложения, фильтруем
