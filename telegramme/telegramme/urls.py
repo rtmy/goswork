@@ -16,6 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from client_interface import views as client_views
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('chat/init/', client_views.init_connection),
+    path('chat/send/', client_views.send_message),
+    path('chat/state/', client_views.current_state),
+    path('chat/list/', client_views.message_list),
+    # path('messages/', client_views.current_datetime),
 ]
